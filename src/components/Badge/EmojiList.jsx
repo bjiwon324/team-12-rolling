@@ -4,7 +4,9 @@ import { useEffect, useState } from 'react';
 
 const EmojiBest = styled.ul`
   min-width: 15rem;
+  max-width: 19rem;
   display: flex;
+
   gap: 0.8rem;
   margin: 0 1.4rem;
   border: none;
