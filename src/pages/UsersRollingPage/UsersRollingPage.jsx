@@ -1,16 +1,9 @@
 import { useParams, useLocation, Link, useNavigate } from 'react-router-dom';
 import React, { useEffect, useState } from 'react';
-import {
-  getRecipientMessages,
-  getRecipients,
-  deleteMessages,
-  deleteRecipient,
-} from '../../apis/apiRecipients';
+import { getRecipientMessages, getRecipients, deleteMessages, deleteRecipient } from '../../apis/apiRecipients';
 import styled from 'styled-components';
 import Header from '../../components/Header/Header';
-import HeaderBottom, {
-  ToRecipient,
-} from '../../components/Header/HeaderBottom';
+import HeaderBottom, { ToRecipient } from '../../components/Header/HeaderBottom';
 import HeaderTop from '../../components/Header/HeaderTop';
 import Toast from '../../components/Toast/Toast';
 import RollingPageCardList from '../../components/Card/RollingPageCardList';
@@ -75,7 +68,6 @@ const AlignButton = styled.div`
   @media screen and (max-width: 767px) {
     justify-content: center;
     position: fixed;
-    /* width: 90vw; */
     right: 2.4rem;
     bottom: 2.4rem;
     left: 2.4rem;
@@ -84,6 +76,7 @@ const AlignButton = styled.div`
 `;
 
 const DeleteButton = styled(PrimaryBtn)`
+  margin-bottom: 2rem;
   width: auto;
 
   @media screen and (max-width: 767px) {
@@ -152,9 +145,7 @@ export default function UsersRollingPage({ deletePage = false }) {
     }
 
     try {
-      await navigator.clipboard.writeText(
-        process.env.REACT_APP_BASE_URL + location.pathname
-      );
+      await navigator.clipboard.writeText(process.env.REACT_APP_BASE_URL + location.pathname);
       setCopyURL(true);
     } catch (err) {
       console.log(err);
@@ -202,7 +193,7 @@ export default function UsersRollingPage({ deletePage = false }) {
     if (window.Kakao) {
       const kakao = window.Kakao;
       if (!kakao.isInitialized()) {
-        kakao.init(process.env.REACT_APP_KAKAO_KEY);
+        //kakao.init(process.env.REACT_APP_KAKAO_KEY);
       }
     }
   }, []);
@@ -215,11 +206,7 @@ export default function UsersRollingPage({ deletePage = false }) {
   return (
     <>
       <Header>
-        {width > 767 ? (
-          <HeaderTop width={width} users={true} />
-        ) : (
-          <ToRecipient>To. {response.name}</ToRecipient>
-        )}
+        {width > 767 ? <HeaderTop width={width} users={true} /> : <ToRecipient>To. {response.name}</ToRecipient>}
       </Header>
 
       <RecipientContext.Provider value={response}>
@@ -230,7 +217,8 @@ export default function UsersRollingPage({ deletePage = false }) {
                 width={width}
                 onShare={handleShare}
                 onShareURLClick={handleSumbitAdressShare}
-                onClick={handleClickEmojiPickerOpenList}>
+                onClick={handleClickEmojiPickerOpenList}
+              >
                 {response.name}
               </HeaderBottom>
             ) : null}
@@ -239,18 +227,14 @@ export default function UsersRollingPage({ deletePage = false }) {
         </IdContext.Provider>
       </RecipientContext.Provider>
 
-      <Main
-        backgroundColor={response.backgroundColor}
-        backgroundImageURL={response.backgroundImageURL}>
+      <Main backgroundColor={response.backgroundColor} backgroundImageURL={response.backgroundImageURL}>
         <AlignButton>
           {deletePage && (
             <DeleteButton size="small" onClick={handleDeleteRecipient}>
               페이지 삭제하기
             </DeleteButton>
           )}
-          <Link
-            to={deletePage ? `/post/${params.createdId}` : 'edit'}
-            style={{ textDecoration: 'none' }}>
+          <Link to={deletePage ? `/post/${params.createdId}` : 'edit'} style={{ textDecoration: 'none' }}>
             <DeleteButton size="small" deletePage={deletePage}>
               {deletePage ? '저장하기' : '삭제하기'}
             </DeleteButton>
@@ -262,7 +246,8 @@ export default function UsersRollingPage({ deletePage = false }) {
           isModal={isModal}
           setIsModal={setIsModal}
           items={items}
-          deletePage={deletePage}></RollingPageCardList>
+          deletePage={deletePage}
+        ></RollingPageCardList>
 
         {copyURL && <StyledToast></StyledToast>}
       </Main>
